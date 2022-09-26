@@ -6,76 +6,67 @@ StringBuilder rightGuesses = new StringBuilder();
 StringBuilder wrongGuesses = new StringBuilder();
 StringBuilder guesses = new StringBuilder();
 string guess;
-//string[] listOfSecrets = new string[5] { "test", "philosophy", "something", "better", "why" };
 
-static string GenSecret()
+string[] secrets = new string[] { "ddafadsfa", "daadferre", "afadfd", "raewr", "adfadf", "adsfadfs" };
+
+static string GenSecret(string[] secrets)
 {
-    string chars = "abcdefghijklmnopqrstuvwxyz";
-    var output = new StringBuilder();
     var random = new Random();
-    for (int i = 0; i < 10; i++)
-    {
-        var randomNumber = random.Next(chars.Length);
-        var randomChar = chars[randomNumber];
-        output.Append(randomChar);
-    }
-    Console.WriteLine(output.ToString());
-    return output.ToString();
+    var randomNumber = random.Next(secrets.Length);
+    string secret = secrets[randomNumber];
+    Console.WriteLine(secret);
+    return secret;
 }
 
-string secret = GenSecret();
+string secret = GenSecret(secrets);
 
-static string ShowSecret(string secret, string revealed)
+static string ShowSecret(string secret, string guesses)
 {
     StringBuilder sb = new StringBuilder();
     foreach (char c in secret)
     {
-        if (revealed.Contains(c))
-        {
-            sb.Append(c);
-        }
+        if (guesses.Contains(c))
+            sb.Append($"{c} ");
         else
-        {
-            sb.Append("_");
-        }
+            sb.Append($"_ ");
     }
-    string sbb = sb.ToString();
-    Console.WriteLine($"The Secret: {sbb}");
-    return sbb;
+    Console.WriteLine($"The Secret: {sb.ToString()}");
+    return sb.ToString();
 }
 
-
-static void OneTimeGuess(string guess, string secret)
-{
-    if (guess == secret)
-        Console.WriteLine("Win");
-    else
-        Console.WriteLine("loose");
-}
 
 int numOfGuesses = 10;
+//Console.WriteLine(ShowSecret(secret,""));
 string ans = "";
 do
 {
     Console.Write($"This is your {11 - numOfGuesses} guess, left {numOfGuesses} guess: ");
     guess = Console.ReadLine();
-    if (guesses.ToString().Contains(guess))
-    {
+    if (guess == "" || guesses.ToString().Contains(guess))
         continue;
+    else if (secret == guess)
+    {
+        ans = ShowSecret(secret, guess);
+        break;
     }
-    else if (! secret.Contains(guess))
+    else if (guess.Length > 1)
+    {
+        numOfGuesses--;
+    }
+    else if (!secret.Contains(guess))
     {
         wrongGuesses.Append(guess);
         guesses.Append(guess);
+        numOfGuesses--;
     }
     else
     {
         rightGuesses.Append(guess);
         guesses.Append(guess);
+        numOfGuesses--;
     }
-    Console.WriteLine($"Your wrong are: {wrongGuesses.ToString()}");
-    numOfGuesses--;
     ans = ShowSecret(secret, rightGuesses.ToString());
+    Console.WriteLine($"Your wrong guess are: {wrongGuesses.ToString()}");
     if (! ans.Contains("_"))
         break;
 }
@@ -83,9 +74,7 @@ while (numOfGuesses > 0);
 
 
 if (ans.Contains("_"))
-{
     Console.WriteLine("Loser");
-}
 else
-    Console.WriteLine("Winner");
+    Console.WriteLine($"You win.\nThe secret is: {secret}");
 
