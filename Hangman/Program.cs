@@ -68,7 +68,7 @@ while (true)
     {
         Formater(ans);
         Console.WriteLine($"Your wrong guess are: {wrongGuesses.ToString()}");
-        Console.WriteLine($"Please input your {11 - numOfGuesses} guess of {numOfGuesses}:");
+        Console.WriteLine($"Please input your {11 - numOfGuesses} guess of 10:");
         guess = Console.ReadLine()!;
         continue;
     }
