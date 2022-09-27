@@ -49,12 +49,7 @@ string ans;
 while (true)
 {
     ans = BuildAnswer(secret, string.Join("", rightGuesses));
-    if (numOfGuesses == 0)
-    {
-        Console.WriteLine("Game Over");
-        break;
-    }
-    else if (guess == secret)
+    if (guess == secret)
     {
         Console.WriteLine($"You win.\nThe secret is: {secret}");
         break;
@@ -62,6 +57,11 @@ while (true)
     else if (ans == secret)
     {
         Console.WriteLine($"You win.\nThe secret is: {secret}");
+        break;
+    }
+    else if (numOfGuesses == 0)
+    {
+        Console.WriteLine($"Game Over.\nThe secret was {secret}");
         break;
     }
     else if (guess == "")
@@ -91,7 +91,7 @@ while (true)
     }
     else if (secret.Contains(guess))
     {
-        rightGuesses[11 - numOfGuesses] = char.Parse(guess);
+        rightGuesses[numOfGuesses] = char.Parse(guess);
         guesses.Append(guess);
         guess = "";
         numOfGuesses--;
