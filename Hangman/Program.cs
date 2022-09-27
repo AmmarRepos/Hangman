@@ -6,7 +6,7 @@ static string GenSecret(string[] secrets)
     var random = new Random();
     var randomNumber = random.Next(secrets.Length);
     string secret = secrets[randomNumber];
-    Console.WriteLine(secret);
+    //Console.WriteLine(secret);
     return secret;
 }
 
@@ -36,7 +36,7 @@ static void Formater(string text)
     Console.WriteLine($"Your secret looks like: {sb.ToString()}");
 }
 
-string[] secrets = new string[] { "philosophy", "Right", "Wrong", "WOOOOOW", "m", "zzz" };
+string[] secrets = new string[] { "philosophy", "Right", "Wrong", "Screen", "TEST", "Bottle" };
 StringBuilder wrongGuesses = new StringBuilder();
 StringBuilder guesses = new StringBuilder();
 char[] rightGuesses = new char[10];
@@ -51,7 +51,7 @@ while (true)
     ans = BuildAnswer(secret, string.Join("", rightGuesses));
     if (numOfGuesses == 0)
     {
-        Console.WriteLine("Game Over Loser");
+        Console.WriteLine("Game Over");
         break;
     }
     else if (guess == secret)
