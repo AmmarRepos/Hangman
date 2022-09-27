@@ -43,7 +43,7 @@ char[] rightGuesses = new char[10];
 string guess = "";
 string secret = GenSecret(secrets);
 int numOfGuesses = 10;
-string ans = "";
+string ans;
 
 
 while (true)
