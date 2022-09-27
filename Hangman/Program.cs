@@ -36,6 +36,16 @@ static void Formater(string text)
     Console.WriteLine($"Your secret looks like: {sb.ToString()}");
 }
 
+static void AnnounceWin(string secret)
+{
+    Console.WriteLine($"You win.\nThe secret is: {secret}");
+}
+
+static void AnnounceLost(string secret)
+{
+    Console.WriteLine($"Game Over.\nThe secret was {secret}");
+}
+
 string[] secrets = new string[] { "philosophy", "Right", "Wrong", "Screen", "TEST", "Bottle" };
 StringBuilder wrongGuesses = new StringBuilder();
 StringBuilder guesses = new StringBuilder();
@@ -51,17 +61,17 @@ while (true)
     ans = BuildAnswer(secret, string.Join("", rightGuesses));
     if (guess == secret)
     {
-        Console.WriteLine($"You win.\nThe secret is: {secret}");
+        AnnounceWin(secret);
         break;
     }
     else if (ans == secret)
     {
-        Console.WriteLine($"You win.\nThe secret is: {secret}");
+        AnnounceWin(secret);
         break;
     }
     else if (numOfGuesses == 0)
     {
-        Console.WriteLine($"Game Over.\nThe secret was {secret}");
+        AnnounceLost(secret);
         break;
     }
     else if (guess == "")
