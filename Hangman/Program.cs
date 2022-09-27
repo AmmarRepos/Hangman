@@ -1,13 +1,5 @@
 ﻿// Hangman game
-using System;
 using System.Text;
-
-StringBuilder rightGuesses = new StringBuilder();
-StringBuilder wrongGuesses = new StringBuilder();
-StringBuilder guesses = new StringBuilder();
-string guess;
-
-string[] secrets = new string[] { "ddafadsfa", "daadferre", "afadfd", "raewr", "adfadf", "adsfadfs" };
 
 static string GenSecret(string[] secrets)
 {
@@ -18,63 +10,90 @@ static string GenSecret(string[] secrets)
     return secret;
 }
 
-string secret = GenSecret(secrets);
-
-static string ShowSecret(string secret, string guesses)
+static string BuildAnswer(string secret, string guesses)
 {
     StringBuilder sb = new StringBuilder();
     foreach (char c in secret)
     {
         if (guesses.Contains(c))
-            sb.Append($"{c} ");
+            sb.Append(c);
         else
-            sb.Append($"_ ");
+            sb.Append("_");
     }
-    Console.WriteLine($"The Secret: {sb.ToString()}");
     return sb.ToString();
 }
 
-
-int numOfGuesses = 10;
-//Console.WriteLine(ShowSecret(secret,""));
-string ans = "";
-do
+static void Formater(string text)
 {
-    Console.Write($"This is your {11 - numOfGuesses} guess, left {numOfGuesses} guess: ");
-    guess = Console.ReadLine();
-    if (guess == "" || guesses.ToString().Contains(guess))
-        continue;
-    else if (secret == guess)
+    StringBuilder sb = new StringBuilder();
+    foreach (char c in text)
     {
-        ans = ShowSecret(secret, guess);
+        if (c == char.Parse("_"))
+            sb.Append($"{c} ");
+        else
+            sb.Append($"{c}");
+    }
+    Console.WriteLine($"Your secret looks like: {sb.ToString()}");
+}
+
+string[] secrets = new string[] { "philosophy", "Right", "Wrong", "WOOOOOW", "m", "zzz" };
+StringBuilder wrongGuesses = new StringBuilder();
+StringBuilder guesses = new StringBuilder();
+char[] rightGuesses = new char[10];
+string guess = "";
+string secret = GenSecret(secrets);
+int numOfGuesses = 10;
+string ans = "";
+
+
+while (true)
+{
+    ans = BuildAnswer(secret, string.Join("", rightGuesses));
+    if (numOfGuesses == 0)
+    {
+        Console.WriteLine("Game Over Loser");
         break;
+    }
+    else if (guess == secret)
+    {
+        Console.WriteLine($"You win.\nThe secret is: {secret}");
+        break;
+    }
+    else if (ans == secret)
+    {
+        Console.WriteLine($"You win.\nThe secret is: {secret}");
+        break;
+    }
+    else if (guess == "")
+    {
+        Formater(ans);
+        Console.WriteLine($"Your wrong guess are: {wrongGuesses.ToString()}");
+        Console.WriteLine($"Please input your {11 - numOfGuesses} guess of {numOfGuesses}:");
+        guess = Console.ReadLine()!;
+        continue;
+    }
+    else if (guesses.ToString().Contains(guess))
+    {
+        guess = "";
+        continue;
     }
     else if (guess.Length > 1)
     {
         numOfGuesses--;
+        guess = "";
     }
     else if (!secret.Contains(guess))
     {
         wrongGuesses.Append(guess);
         guesses.Append(guess);
+        guess = "";
         numOfGuesses--;
     }
-    else
+    else if (secret.Contains(guess))
     {
-        rightGuesses.Append(guess);
+        rightGuesses[11 - numOfGuesses] = char.Parse(guess);
         guesses.Append(guess);
+        guess = "";
         numOfGuesses--;
-    }
-    ans = ShowSecret(secret, rightGuesses.ToString());
-    Console.WriteLine($"Your wrong guess are: {wrongGuesses.ToString()}");
-    if (! ans.Contains("_"))
-        break;
+    }   
 }
-while (numOfGuesses > 0);
-
-
-if (ans.Contains("_"))
-    Console.WriteLine("Loser");
-else
-    Console.WriteLine($"You win.\nThe secret is: {secret}");
-
